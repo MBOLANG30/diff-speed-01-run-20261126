@@ -33,8 +33,14 @@ const cases = JSON.parse(readFileSync(join(INPUT_DIR, 'cases.json'), 'utf8')) as
   input: unknown;
 }[];
 
+/** Answer one case on its own with run() from solve.js: no state, cache or
+ *  result is shared between cases, so each answer depends only on its case. */
+function answerOne(c: { id: string; input: unknown }): unknown {
+  return run(c.input);
+}
+
 /** One answer per case, in the cases' order. */
 const answers: unknown[] = new Array(cases.length);
-for (let i = 0; i < cases.length; i++) answers[i] = run(cases[i]!.input);
+for (let i = 0; i < cases.length; i++) answers[i] = answerOne(cases[i]!);
 
 writeFileSync(join(OUTPUT_DIR, 'answers.json'), JSON.stringify(answers));
